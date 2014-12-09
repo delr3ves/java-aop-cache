@@ -23,7 +23,7 @@ public class GuavaCacheImpl implements Cache {
 
     public GuavaCacheImpl(String namespace, CacheNamespaceConfig config, MetricRegistry metricRegistry) {
         resultsCache = CacheBuilder.newBuilder().maximumSize(config.getResultCacheSize())
-                .expireAfterAccess(config.getResultCachettl(), config.getResultCacheTimeUnit()).recordStats().build();
+                .expireAfterAccess(config.getResultCacheTtl(), config.getResultCacheTimeUnit()).recordStats().build();
         registerCacheMerics(namespace + "Results", resultsCache, metricRegistry);
 
         exceptionsCache = CacheBuilder.newBuilder().maximumSize(config.getErrorCacheSize())

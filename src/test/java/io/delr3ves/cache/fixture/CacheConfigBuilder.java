@@ -29,13 +29,13 @@ public class CacheConfigBuilder {
         Map<String, CacheNamespaceConfig> configValues = new HashMap<String, CacheNamespaceConfig>();
         CacheNamespaceConfig ehconfig = new CacheNamespaceConfig();
         ehconfig.setProvider(CacheNamespaceConfig.CacheProvider.EHCACHE);
-        ehconfig.setResultCachettl(EHCACHE_TTL);
+        ehconfig.setResultCacheTtl(EHCACHE_TTL);
         ehconfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
         configValues.put(EHCAHE_NAMESPACE, ehconfig);
 
         CacheNamespaceConfig guavaConfig = new CacheNamespaceConfig();
         guavaConfig.setProvider(CacheNamespaceConfig.CacheProvider.GUAVA);
-        guavaConfig.setResultCachettl(GUAVA_TTL);
+        guavaConfig.setResultCacheTtl(GUAVA_TTL);
         guavaConfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
         guavaConfig.setErrorCachettl(GUAVA_TTL);
         guavaConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);

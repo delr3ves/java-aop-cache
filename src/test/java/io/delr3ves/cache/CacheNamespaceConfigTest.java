@@ -29,7 +29,7 @@ public class CacheNamespaceConfigTest {
     @Test(dataProvider = "conversionProvider")
     public void testTTLResultConversion(Integer ttl, TimeUnit timeUnit, Long expected) {
         CacheNamespaceConfig config = new CacheNamespaceConfig();
-        config.setResultCachettl(ttl);
+        config.setResultCacheTtl(ttl);
         config.setResultCacheTimeUnit(timeUnit);
         assertThat(config.getResultTTLInSeconds(), equalTo(expected));
     }

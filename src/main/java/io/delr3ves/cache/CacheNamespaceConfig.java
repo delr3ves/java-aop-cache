@@ -15,12 +15,11 @@ public class CacheNamespaceConfig {
     public static final int DEFAULT_EXPIRATION = 600;
     public static final int DEFAULT_EXCEPTION_EXPIRATION = 300;
     public static final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.SECONDS;
-
     public static final CacheProvider DEFAULT_PROVIDER = CacheProvider.GUAVA;
 
     private CacheProvider provider = DEFAULT_PROVIDER;
     private Integer resultCacheSize = DEFAULT_MAXIUM_SIZE;
-    private Integer resultCachettl = DEFAULT_EXPIRATION;
+    private Integer resultCacheTtl = DEFAULT_EXPIRATION;
     private TimeUnit resultCacheTimeUnit = DEFAULT_TIMEUNIT;
 
     private Integer errorCachettl= DEFAULT_MAXIUM_SIZE;
@@ -28,7 +27,7 @@ public class CacheNamespaceConfig {
     private TimeUnit errorCacheTimeUnit = DEFAULT_TIMEUNIT;
 
     public Long getResultTTLInSeconds() {
-        return resultCacheTimeUnit.toSeconds(resultCachettl);
+        return resultCacheTimeUnit.toSeconds(resultCacheTtl);
     }
 
     public Long getErrorTTLInSeconds() {

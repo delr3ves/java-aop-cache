@@ -15,6 +15,10 @@ public class AOPCacheGuiceModule extends AbstractModule {
     private CacheConfig cacheConfig;
     private MetricRegistry metricRegistry;
 
+    public AOPCacheGuiceModule(CacheConfig cacheConfig) {
+        this(cacheConfig, new MetricRegistry());
+    }
+
     public AOPCacheGuiceModule(CacheConfig cacheConfig, MetricRegistry metricRegistry) {
         this.cacheConfig = cacheConfig;
         this.metricRegistry = metricRegistry;
@@ -25,6 +29,7 @@ public class AOPCacheGuiceModule extends AbstractModule {
         bind(CacheConfig.class).toInstance(cacheConfig);
         bind(CacheManager.class).toInstance(CacheManager.getInstance());
         bind(CacheRegistry.class).to(CacheRegistryImpl.class);
+        bind(MetricRegistry.class).toInstance(metricRegistry);
         CacheGuiceInterceptor cachingInterceptor = new CacheGuiceInterceptor();
         requestInjection(cachingInterceptor);
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(Cached.class), cachingInterceptor);
