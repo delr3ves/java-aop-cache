@@ -1,4 +1,4 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricRegistry;

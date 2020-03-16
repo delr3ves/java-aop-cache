@@ -1,10 +1,10 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 import com.codahale.metrics.MetricRegistry;
+import com.emaginalabs.cache.dummy.DummyCachedMethods;
+import com.emaginalabs.cache.fixture.CacheConfigBuilder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.delr3ves.cache.dummy.DummyCachedMethods;
-import io.delr3ves.cache.fixture.CacheConfigBuilder;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

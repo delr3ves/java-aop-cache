@@ -1,4 +1,4 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

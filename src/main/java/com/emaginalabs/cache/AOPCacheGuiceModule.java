@@ -1,10 +1,10 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 import com.codahale.metrics.MetricRegistry;
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
-import io.delr3ves.cache.aop.CacheGuiceInterceptor;
-import io.delr3ves.cache.provider.CacheRegistryImpl;
+import com.emaginalabs.cache.aop.CacheGuiceInterceptor;
+import com.emaginalabs.cache.provider.CacheRegistryImpl;
 import net.sf.ehcache.CacheManager;
 
 /**

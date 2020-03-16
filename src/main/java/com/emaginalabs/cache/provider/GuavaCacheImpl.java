@@ -1,17 +1,16 @@
-package io.delr3ves.cache.provider;
+package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.RatioGauge;
+import com.emaginalabs.cache.Cache;
+import com.emaginalabs.cache.CacheNamespaceConfig;
+import com.emaginalabs.cache.CachedMethodId;
+import com.emaginalabs.cache.MetricUtils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
-import io.delr3ves.cache.Cache;
-import io.delr3ves.cache.CacheNamespaceConfig;
-import io.delr3ves.cache.CachedMethodId;
 
 import java.text.MessageFormat;
-
-import static io.delr3ves.cache.MetricUtils.registerMetric;
 
 /**
  * @author Sergio Arroyo - @delr3ves
@@ -27,44 +26,44 @@ public class GuavaCacheImpl implements Cache {
         registerCacheMerics(namespace + "Results", resultsCache, metricRegistry);
 
         exceptionsCache = CacheBuilder.newBuilder().maximumSize(config.getErrorCacheSize())
-                .expireAfterAccess(config.getErrorCachettl(), config.getErrorCacheTimeUnit()).recordStats().build();
+                .expireAfterAccess(config.getErrorCacheTtl(), config.getErrorCacheTimeUnit()).recordStats().build();
         registerCacheMerics(namespace + "Exceptions", exceptionsCache, metricRegistry);
 
     }
 
     private void registerCacheMerics(String namespace, final com.google.common.cache.Cache cache, MetricRegistry metricRegistry) {
         final CacheStats stats = cache.stats();
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitCount"), new Gauge<Long>() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitCount"), new Gauge<Long>() {
             @Override
             public Long getValue() {
                 return stats.hitCount();
             }
         });
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "MissCount"), new Gauge<Long>() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "MissCount"), new Gauge<Long>() {
             @Override
             public Long getValue() {
                 return stats.missCount();
             }
         });
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitRatio"), new Gauge<Double>() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitRatio"), new Gauge<Double>() {
             @Override
             public Double getValue() {
                 return stats.hitRate();
             }
         });
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "Size"), new Gauge<Long>() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "Size"), new Gauge<Long>() {
             @Override
             public Long getValue() {
                 return cache.size();
             }
         });
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "RequestCount"), new Gauge<Long>() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "RequestCount"), new Gauge<Long>() {
             @Override
             public Long getValue() {
                 return stats.requestCount();
             }
         });
-        registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "MissRatio"), new RatioGauge() {
+        MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "MissRatio"), new RatioGauge() {
             @Override
             public Ratio getRatio() {
                 return Ratio.of(stats.missCount(), stats.requestCount());

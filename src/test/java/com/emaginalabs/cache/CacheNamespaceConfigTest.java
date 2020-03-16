@@ -1,4 +1,4 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -37,7 +37,7 @@ public class CacheNamespaceConfigTest {
     @Test(dataProvider = "conversionProvider")
     public void testTTLErrorConversion(Integer ttl, TimeUnit timeUnit, Long expected) {
         CacheNamespaceConfig config = new CacheNamespaceConfig();
-        config.setErrorCachettl(ttl);
+        config.setErrorCacheTtl(ttl);
         config.setErrorCacheTimeUnit(timeUnit);
         assertThat(config.getErrorTTLInSeconds(), equalTo(expected));
     }

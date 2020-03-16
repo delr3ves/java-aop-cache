@@ -1,4 +1,4 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 /**
  * In charge to maintain the cache registry and retrieve caches based on their namespace.

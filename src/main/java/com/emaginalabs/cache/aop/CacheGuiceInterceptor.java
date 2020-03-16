@@ -1,9 +1,9 @@
-package io.delr3ves.cache.aop;
+package com.emaginalabs.cache.aop;
 
-import io.delr3ves.cache.Cache;
-import io.delr3ves.cache.CacheRegistry;
-import io.delr3ves.cache.Cached;
-import io.delr3ves.cache.CachedMethodId;
+import com.emaginalabs.cache.Cache;
+import com.emaginalabs.cache.Cached;
+import com.emaginalabs.cache.CachedMethodId;
+import com.emaginalabs.cache.CacheRegistry;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 

@@ -1,7 +1,7 @@
-package io.delr3ves.cache.fixture;
+package com.emaginalabs.cache.fixture;
 
-import io.delr3ves.cache.CacheConfig;
-import io.delr3ves.cache.CacheNamespaceConfig;
+import com.emaginalabs.cache.CacheConfig;
+import com.emaginalabs.cache.CacheNamespaceConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class CacheConfigBuilder {
         guavaConfig.setProvider(CacheNamespaceConfig.CacheProvider.GUAVA);
         guavaConfig.setResultCacheTtl(GUAVA_TTL);
         guavaConfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
-        guavaConfig.setErrorCachettl(GUAVA_TTL);
+        guavaConfig.setErrorCacheTtl(GUAVA_TTL);
         guavaConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);
         configValues.put(GUAVA_NAMESPACE, guavaConfig);
 

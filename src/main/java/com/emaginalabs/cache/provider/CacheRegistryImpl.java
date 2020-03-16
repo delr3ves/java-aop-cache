@@ -1,7 +1,8 @@
-package io.delr3ves.cache.provider;
+package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.MetricRegistry;
-import io.delr3ves.cache.*;
+import com.emaginalabs.cache.*;
+import com.emaginalabs.cache.*;
 import net.sf.ehcache.CacheManager;
 
 import javax.inject.Inject;

@@ -1,7 +1,7 @@
-package io.delr3ves.cache.dummy;
+package com.emaginalabs.cache.dummy;
 
-import io.delr3ves.cache.Cached;
-import io.delr3ves.cache.fixture.CacheConfigBuilder;
+import com.emaginalabs.cache.Cached;
+import com.emaginalabs.cache.fixture.CacheConfigBuilder;
 
 import java.util.Date;
 

@@ -1,11 +1,11 @@
-package io.delr3ves.cache.provider;
+package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.RatioGauge;
-import io.delr3ves.cache.Cache;
-import io.delr3ves.cache.CacheNamespaceConfig;
-import io.delr3ves.cache.CachedMethodId;
+import com.emaginalabs.cache.Cache;
+import com.emaginalabs.cache.CacheNamespaceConfig;
+import com.emaginalabs.cache.CachedMethodId;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.config.CacheConfiguration;
@@ -13,7 +13,7 @@ import net.sf.ehcache.statistics.StatisticsGateway;
 
 import java.text.MessageFormat;
 
-import static io.delr3ves.cache.MetricUtils.registerMetric;
+import static com.emaginalabs.cache.MetricUtils.registerMetric;
 
 /**
  * @author Sergio Arroyo - @delr3ves

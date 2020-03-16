@@ -1,6 +1,6 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
-import io.delr3ves.cache.fixture.CacheConfigBuilder;
+import com.emaginalabs.cache.fixture.CacheConfigBuilder;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

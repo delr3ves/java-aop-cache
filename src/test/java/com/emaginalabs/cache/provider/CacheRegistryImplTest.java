@@ -1,11 +1,11 @@
-package io.delr3ves.cache.provider;
+package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.MetricRegistry;
-import io.delr3ves.cache.Cache;
-import io.delr3ves.cache.CacheConfig;
-import io.delr3ves.cache.CacheRegistry;
-import io.delr3ves.cache.Cached;
-import io.delr3ves.cache.fixture.CacheConfigBuilder;
+import com.emaginalabs.cache.Cache;
+import com.emaginalabs.cache.Cached;
+import com.emaginalabs.cache.fixture.CacheConfigBuilder;
+import com.emaginalabs.cache.CacheConfig;
+import com.emaginalabs.cache.CacheRegistry;
 import net.sf.ehcache.CacheManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

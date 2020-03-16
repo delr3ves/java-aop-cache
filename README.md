@@ -11,7 +11,7 @@ First of all you'll need to add the dependency to your project:
 Maven:
 
     <dependency>
-        <groupId>io.delr3ves</groupId>
+        <groupId>com.emaginalabs</groupId>
         <artifactId>aop-cache</artifactId>
         <version>${aop-cache-version}</version>
     </dependency>
@@ -19,11 +19,11 @@ Maven:
 
 Gradle:
 
-    compile 'io.delr3ves:aop-cache:${aop-cache-version}'
+    compile 'com.emaginalabs:aop-cache:${aop-cache-version}'
 
 SBT:
 
-    libraryDependencies += "io.delr3ves" % "aop-cache" % "${aop-cache-version}"
+    libraryDependencies += "com.emaginalabs" % "aop-cache" % "${aop-cache-version}"
 
 Once you have the dependency, you'll need to install the cache module:
 
@@ -72,10 +72,10 @@ You'll also need to install the proper module in your GuiceModule configuration:
            
 Default values are:
 
-    public static final int DEFAULT_MAXIUM_SIZE = 50000;
+    public static final int DEFAULT_MAXIMUM_SIZE = 50000;
     public static final int DEFAULT_EXPIRATION = 600;
     public static final int DEFAULT_EXCEPTION_EXPIRATION = 300;
-    public static final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.SECONDS;
+    public static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
     public static final CacheProvider DEFAULT_PROVIDER = CacheProvider.GUAVA;
 
 

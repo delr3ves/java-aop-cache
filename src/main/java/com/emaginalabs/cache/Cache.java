@@ -1,4 +1,4 @@
-package io.delr3ves.cache;
+package com.emaginalabs.cache;
 
 /**
  * @author Sergio Arroyo - @delr3ves
