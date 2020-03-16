@@ -4,10 +4,12 @@ install: echo "My projects will be configurable in an awesomical way ;)."
 
 # don't just run the tests, also run Findbugs and friends
 script: mvn clean verify
-
+dist: bionic
 jdk:
-  - oraclejdk7
-  - oraclejdk8
+  - openjdk8
+  - openjdk9
+  - openjdk10
+  - openjdk11
 
 after_success:
   - mvn jacoco:report coveralls:report
