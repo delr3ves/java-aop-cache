@@ -23,15 +23,15 @@ public class GuavaCacheImpl implements Cache {
     public GuavaCacheImpl(String namespace, CacheNamespaceConfig config, MetricRegistry metricRegistry) {
         resultsCache = CacheBuilder.newBuilder().maximumSize(config.getResultCacheSize())
                 .expireAfterAccess(config.getResultCacheTtl(), config.getResultCacheTimeUnit()).recordStats().build();
-        registerCacheMerics(namespace + "Results", resultsCache, metricRegistry);
+        registerCacheMetrics(namespace + "Results", resultsCache, metricRegistry);
 
         exceptionsCache = CacheBuilder.newBuilder().maximumSize(config.getErrorCacheSize())
                 .expireAfterAccess(config.getErrorCacheTtl(), config.getErrorCacheTimeUnit()).recordStats().build();
-        registerCacheMerics(namespace + "Exceptions", exceptionsCache, metricRegistry);
+        registerCacheMetrics(namespace + "Exceptions", exceptionsCache, metricRegistry);
 
     }
 
-    private void registerCacheMerics(String namespace, final com.google.common.cache.Cache cache, MetricRegistry metricRegistry) {
+    private void registerCacheMetrics(String namespace, final com.google.common.cache.Cache cache, MetricRegistry metricRegistry) {
         final CacheStats stats = cache.stats();
         MetricUtils.registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitCount"), new Gauge<Long>() {
             @Override

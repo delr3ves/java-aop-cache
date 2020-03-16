@@ -4,6 +4,7 @@ import com.emaginalabs.cache.Cached;
 import com.emaginalabs.cache.fixture.CacheConfigBuilder;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Sergio Arroyo - @delr3ves
@@ -11,23 +12,23 @@ import java.util.Date;
 public class DummyCachedMethods {
 
     @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE)
-    public Date getCachedDateByGuava() {
-        return new Date();
+    public String getCachedUUIDByGuava() {
+        return UUID.randomUUID().toString();
     }
 
     @Cached(namespace = CacheConfigBuilder.EHCAHE_NAMESPACE)
-    public Date getCachedDateByEhCache() {
-        return new Date();
+    public String getCachedUUIDByEhCache() {
+        return UUID.randomUUID().toString();
     }
 
     @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE, cachedExceptions = {Exception.class})
-    public Date throwCachedException() throws Exception{
-        throw new Exception(new Date().toString());
+    public String throwCachedException() throws Exception{
+        throw new Exception(UUID.randomUUID().toString());
     }
 
     @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE, cachedExceptions = {NullPointerException.class})
-    public Date throwNonCachedException() {
-        throw new RuntimeException(new Date().toString());
+    public String throwNonCachedException() {
+        throw new RuntimeException(UUID.randomUUID().toString());
     }
 
 }

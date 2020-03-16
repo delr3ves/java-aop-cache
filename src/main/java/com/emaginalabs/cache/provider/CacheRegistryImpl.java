@@ -39,6 +39,12 @@ public class CacheRegistryImpl implements CacheRegistry {
         return cache;
     }
 
+    @Override
+    public void removeCache(final String namespace) {
+        CacheNamespaceConfig cacheConfig = this.cacheConfig.getOrDefault(namespace, this.cacheConfig.get(Cached.DEFAULT_NAMESPACE));
+        initializeCache(namespace, cacheConfig);
+    }
+
     private void initializeCaches() {
         for(Map.Entry<String, CacheNamespaceConfig> entry: cacheConfig.entrySet()) {
             initializeCache(entry.getKey(), entry.getValue());

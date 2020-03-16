@@ -14,8 +14,8 @@ public class CacheConfigBuilder {
 
     public static final String EHCAHE_NAMESPACE = "EHCAHE_NAMESPACE";
     public static final String GUAVA_NAMESPACE = "GUAVA";
-    public static final int GUAVA_TTL = 10;
-    public static final int EHCACHE_TTL = 1000;
+    public static final int GUAVA_TTL = 1000;
+    public static final int EHCACHE_TTL = 1500;
 
     public static CacheConfig createConfigForNamespace(String namespace) {
         Map<String, CacheNamespaceConfig> configValues = new HashMap<String, CacheNamespaceConfig>();

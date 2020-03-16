@@ -15,4 +15,11 @@ public interface CacheRegistry {
      * @return the cache that match with the namespace.
      */
     Cache getCache(String namespace);
+
+    /**
+     * Remove cache from the registry in order to invalidate it
+     *
+     * @param namespace the namespace to identify the cache+
+     */
+    void removeCache(String namespace);
 }
