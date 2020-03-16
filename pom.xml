@@ -10,10 +10,18 @@
     <description>Provides utilities to cache methods in an aspect oriented way.</description>
 
     <inceptionYear>2014</inceptionYear>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
     <issueManagement>
         <system>github</system>
         <url>https://github.com/delr3ves/java-${project.artifactId}/issues</url>
     </issueManagement>
+
     <developers>
         <developer>
             <id>delr3ves</id>
@@ -24,14 +32,14 @@
 
     <ciManagement>
         <system>travys</system>
-        <url>https://travis-ci.org/delr3ves/java-${artifactId}</url>
+        <url>https://travis-ci.org/delr3ves/java-${project.artifactId}</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/delr3ves/java-${artifactId}</connection>
-        <developerConnection>scm:git:git@github.com:delr3ves/java-${artifactId}.git
+        <connection>scm:git:https://github.com/delr3ves/java-${project.artifactId}</connection>
+        <developerConnection>scm:git:git@github.com:delr3ves/java-${project.artifactId}.git
         </developerConnection>
-        <url>https://github.com/delr3ves/java-${artifactId}</url>
+        <url>https://github.com/delr3ves/java-${project.artifactId}</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -92,6 +100,7 @@
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy nexus-staging:release</goals>
+                    <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
                 </configuration>
             </plugin>
         </plugins>
