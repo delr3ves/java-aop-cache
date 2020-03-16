@@ -91,7 +91,8 @@ millis for a "request time" cache
 * **cachedExceptions:** Will contains the list of parent exceptions to be cached. We use hierarchy in order to be able to
 cache more than one exception in a single way. So we can cache for example all Checked exceptions just adding *Exception* to the list.
 
-##Considerations
+## Considerations
+
 As long as we use Google Guice as AOP framework, **you'll need to create your cacheable classes with Guice.**
 
 For this first version, both Google's Guava and EhCache implementations are stored in memory. 
