@@ -24,14 +24,14 @@
 
     <ciManagement>
         <system>travys</system>
-        <url>https://travis-ci.org/delr3ves/java-${project.artifactId}/</url>
+        <url>https://travis-ci.org/delr3ves/java-${artifactId}</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/delr3ves/java-${project.artifactId}</connection>
-        <developerConnection>scm:git@github.com:delr3ves/java-${project.artifactId}.git
+        <connection>scm:git:https://github.com/delr3ves/java-${artifactId}</connection>
+        <developerConnection>scm:git:git@github.com:delr3ves/java-${artifactId}.git
         </developerConnection>
-        <url>https://github.com/delr3ves/java-${project.artifactId}</url>
+        <url>https://github.com/delr3ves/java-${artifactId}</url>
         <tag>HEAD</tag>
     </scm>
 
