@@ -4,7 +4,7 @@
 
     <groupId>com.emaginalabs</groupId>
     <artifactId>aop-cache</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>AOP Cache</name>
     <description>Provides utilities to cache methods in an aspect oriented way.</description>
     <url>https://github.com/delr3ves/java-${project.artifactId}</url>
@@ -40,7 +40,7 @@
         <developerConnection>scm:git:git@github.com:delr3ves/java-${project.artifactId}.git
         </developerConnection>
         <url>https://github.com/delr3ves/java-${project.artifactId}</url>
-        <tag>HEAD</tag>
+        <tag>aop-cache-1.0.1</tag>
     </scm>
 
     <build>
