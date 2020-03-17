@@ -24,9 +24,9 @@ public class EhCacheImpl implements Cache {
 
     public EhCacheImpl(String namespace, CacheNamespaceConfig config,
                        MetricRegistry metricRegistry, CacheManager cacheManager) {
-        resultsCache = initializaCache(config.getResultCacheSize(), config.getResultTTLInSeconds(),
+        resultsCache = initializeCache(config.getResultCacheSize(), config.getResultTTLInSeconds(),
                 metricRegistry, cacheManager, namespace + "Results");
-        exceptionsCache = initializaCache(config.getErrorCacheSize(), config.getErrorTTLInSeconds(),
+        exceptionsCache = initializeCache(config.getErrorCacheSize(), config.getErrorTTLInSeconds(),
                 metricRegistry, cacheManager, namespace + "Exceptions");
     }
 
@@ -52,6 +52,12 @@ public class EhCacheImpl implements Cache {
         exceptionsCache.put(cacheElement);
     }
 
+    @Override
+    public void invalidate() {
+        resultsCache.removeAll();
+        exceptionsCache.removeAll();
+    }
+
     private void lookForException(CachedMethodId cacheKey) throws Throwable {
         Element cachedException = exceptionsCache.get(cacheKey);
         if (cachedException != null) {
@@ -59,7 +65,7 @@ public class EhCacheImpl implements Cache {
         }
     }
 
-    private net.sf.ehcache.Cache initializaCache(Integer cacheSize, Long ttl, MetricRegistry metricRegistry, CacheManager cacheManager, String cacheName) {
+    private net.sf.ehcache.Cache initializeCache(Integer cacheSize, Long ttl, MetricRegistry metricRegistry, CacheManager cacheManager, String cacheName) {
         if (cacheManager.cacheExists(cacheName)) {
             return cacheManager.getCache(cacheName);
         }
@@ -67,11 +73,11 @@ public class EhCacheImpl implements Cache {
                 .eternal(false)
                 .timeToLiveSeconds(ttl));
         cacheManager.addCache(cache);
-        registerCacheMerics(cacheName, cache, metricRegistry);
+        registerCacheMetrics(cacheName, cache, metricRegistry);
         return cache;
     }
 
-    private void registerCacheMerics(String namespace, final net.sf.ehcache.Cache cache, MetricRegistry metricRegistry) {
+    private void registerCacheMetrics(String namespace, final net.sf.ehcache.Cache cache, MetricRegistry metricRegistry) {
         final StatisticsGateway stats = cache.getStatistics();
         registerMetric(metricRegistry, MessageFormat.format("{0}Cache.{1}", namespace, "HitCount"), new Gauge<Long>() {
             @Override

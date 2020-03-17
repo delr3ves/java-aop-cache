@@ -2,7 +2,6 @@ package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.MetricRegistry;
 import com.emaginalabs.cache.*;
-import com.emaginalabs.cache.*;
 import net.sf.ehcache.CacheManager;
 
 import javax.inject.Inject;
@@ -39,8 +38,16 @@ public class CacheRegistryImpl implements CacheRegistry {
         return cache;
     }
 
+    @Override
+    public void invalidateCache(final String namespace) {
+        Cache cache = this.cacheRegistry.get(namespace);
+        if (cache != null) {
+            cache.invalidate();
+        }
+    }
+
     private void initializeCaches() {
-        for(Map.Entry<String, CacheNamespaceConfig> entry: cacheConfig.entrySet()) {
+        for (Map.Entry<String, CacheNamespaceConfig> entry : cacheConfig.entrySet()) {
             initializeCache(entry.getKey(), entry.getValue());
         }
     }

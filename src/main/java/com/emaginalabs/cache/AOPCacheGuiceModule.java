@@ -2,6 +2,7 @@ package com.emaginalabs.cache;
 
 import com.codahale.metrics.MetricRegistry;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.matcher.Matchers;
 import com.emaginalabs.cache.aop.CacheGuiceInterceptor;
 import com.emaginalabs.cache.provider.CacheRegistryImpl;
@@ -27,12 +28,16 @@ public class AOPCacheGuiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(CacheConfig.class).toInstance(cacheConfig);
-        bind(CacheManager.class).toInstance(CacheManager.getInstance());
-        bind(CacheRegistry.class).to(CacheRegistryImpl.class);
+        bind(CacheRegistry.class).to(CacheRegistryImpl.class).asEagerSingleton();
         bind(MetricRegistry.class).toInstance(metricRegistry);
         CacheGuiceInterceptor cachingInterceptor = new CacheGuiceInterceptor();
         requestInjection(cachingInterceptor);
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(Cached.class), cachingInterceptor);
+    }
+
+    @Provides
+    private CacheManager getCacheManager() {
+        return CacheManager.getInstance();
     }
 
 }

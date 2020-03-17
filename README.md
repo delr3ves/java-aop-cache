@@ -81,6 +81,22 @@ Default values are:
 
 All values are optional so you can configure only the fields you want to change.
 
+### Invalidating Cache
+
+As we don't have the control about the actual key to cache the result, the library won't provide a mechanism
+to invalidate a single cache entry but a whole namespace. To do so, you just need to get the instance of `CacheInvalidator`
+using the injector then you can:
+
+```
+    cacheInvalidator.invalidateNamespace("NAMESPACE_TO_BE_INVALIDATE");
+```
+
+This way we could have a long term cache that would be refreshed in case we know that the values are changed.
+
+**Please, take into account that in case you perform this action for a namespace with a lot of cached data, it could 
+be an issue as lot of cache methods will be invoked again.**  
+
+
 ### Annotation Parameters
 You can configure both the namespace and the allowed cached exceptions:
 

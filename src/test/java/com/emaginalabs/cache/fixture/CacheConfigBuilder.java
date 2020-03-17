@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheConfigBuilder {
 
-    public static final String EHCAHE_NAMESPACE = "EHCAHE_NAMESPACE";
+    public static final String EHCACHE_NAMESPACE = "EHCAHE_NAMESPACE";
     public static final String GUAVA_NAMESPACE = "GUAVA";
-    public static final int GUAVA_TTL = 10;
+    public static final int GUAVA_TTL = 100;
     public static final int EHCACHE_TTL = 1000;
 
     public static CacheConfig createConfigForNamespace(String namespace) {
@@ -31,7 +31,7 @@ public class CacheConfigBuilder {
         ehconfig.setProvider(CacheNamespaceConfig.CacheProvider.EHCACHE);
         ehconfig.setResultCacheTtl(EHCACHE_TTL);
         ehconfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
-        configValues.put(EHCAHE_NAMESPACE, ehconfig);
+        configValues.put(EHCACHE_NAMESPACE, ehconfig);
 
         CacheNamespaceConfig guavaConfig = new CacheNamespaceConfig();
         guavaConfig.setProvider(CacheNamespaceConfig.CacheProvider.GUAVA);
