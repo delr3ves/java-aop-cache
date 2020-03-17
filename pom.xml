@@ -123,7 +123,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <keyname>B4C2824D16CD72E3</keyname>
+                                    <keyname>${gpg.key}</keyname>
                                     <passphrase>${gpg.passphrase}</passphrase>
                                 </configuration>
                             </execution>

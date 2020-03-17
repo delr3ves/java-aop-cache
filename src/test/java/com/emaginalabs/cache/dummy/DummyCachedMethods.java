@@ -3,7 +3,6 @@ package com.emaginalabs.cache.dummy;
 import com.emaginalabs.cache.Cached;
 import com.emaginalabs.cache.fixture.CacheConfigBuilder;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -16,8 +15,18 @@ public class DummyCachedMethods {
         return UUID.randomUUID().toString();
     }
 
-    @Cached(namespace = CacheConfigBuilder.EHCAHE_NAMESPACE)
+    @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE)
+    public String getCachedUUIDByGuavaWithArguments(String argument) {
+        return UUID.randomUUID().toString();
+    }
+
+    @Cached(namespace = CacheConfigBuilder.EHCACHE_NAMESPACE)
     public String getCachedUUIDByEhCache() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Cached(namespace = CacheConfigBuilder.EHCACHE_NAMESPACE)
+    public String getCachedUUIDByEhCacheWithArguments(String argument) {
         return UUID.randomUUID().toString();
     }
 

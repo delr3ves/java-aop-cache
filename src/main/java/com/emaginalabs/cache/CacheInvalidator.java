@@ -12,6 +12,6 @@ public class CacheInvalidator {
     }
 
     public void invalidateNamespace(String namespace) {
-        cacheRegistry.removeCache(namespace);
+        cacheRegistry.invalidateCache(namespace);
     }
 }

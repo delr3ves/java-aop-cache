@@ -52,6 +52,12 @@ public class EhCacheImpl implements Cache {
         exceptionsCache.put(cacheElement);
     }
 
+    @Override
+    public void invalidate() {
+        resultsCache.removeAll();
+        exceptionsCache.removeAll();
+    }
+
     private void lookForException(CachedMethodId cacheKey) throws Throwable {
         Element cachedException = exceptionsCache.get(cacheKey);
         if (cachedException != null) {

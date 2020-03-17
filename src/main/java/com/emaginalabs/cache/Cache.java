@@ -10,4 +10,6 @@ public interface Cache {
     void put(CachedMethodId key, Object value);
 
     void put(CachedMethodId key, Throwable e);
+
+    void invalidate();
 }

@@ -21,5 +21,5 @@ public interface CacheRegistry {
      *
      * @param namespace the namespace to identify the cache+
      */
-    void removeCache(String namespace);
+    void invalidateCache(String namespace);
 }

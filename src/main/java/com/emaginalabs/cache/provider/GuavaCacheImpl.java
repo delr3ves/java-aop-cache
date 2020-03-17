@@ -20,15 +20,60 @@ public class GuavaCacheImpl implements Cache {
     private com.google.common.cache.Cache resultsCache;
     private com.google.common.cache.Cache exceptionsCache;
 
+    private String namespace;
+    private CacheNamespaceConfig config;
+    private MetricRegistry metricRegistry;
+
     public GuavaCacheImpl(String namespace, CacheNamespaceConfig config, MetricRegistry metricRegistry) {
-        resultsCache = CacheBuilder.newBuilder().maximumSize(config.getResultCacheSize())
-                .expireAfterAccess(config.getResultCacheTtl(), config.getResultCacheTimeUnit()).recordStats().build();
+        this.namespace = namespace;
+        this.config = config;
+        this.metricRegistry = metricRegistry;
+
+        initializeCaches();
+    }
+
+    @Override
+    public Object get(CachedMethodId key) throws Throwable {
+        Object cachedResult = resultsCache.getIfPresent(key);
+        if (cachedResult != null) {
+            return cachedResult;
+        }
+        lookForException(key);
+        return null;
+    }
+
+    @Override
+    public void put(CachedMethodId key, Object value) {
+        resultsCache.put(key, value);
+    }
+
+    @Override
+    public void put(CachedMethodId key, Throwable e) {
+        exceptionsCache.put(key, e);
+    }
+
+    @Override
+    public void invalidate() {
+        resultsCache.invalidateAll();
+        resultsCache.cleanUp();
+        exceptionsCache.invalidateAll();
+        exceptionsCache.cleanUp();
+
+        this.initializeCaches();
+    }
+
+    private void initializeCaches() {
+        resultsCache = CacheBuilder.newBuilder()
+                .maximumSize(config.getResultCacheSize())
+                .expireAfterWrite(config.getResultCacheTtl(), config.getResultCacheTimeUnit())
+                .recordStats().build();
         registerCacheMetrics(namespace + "Results", resultsCache, metricRegistry);
 
-        exceptionsCache = CacheBuilder.newBuilder().maximumSize(config.getErrorCacheSize())
-                .expireAfterAccess(config.getErrorCacheTtl(), config.getErrorCacheTimeUnit()).recordStats().build();
+        exceptionsCache = CacheBuilder.newBuilder()
+                .maximumSize(config.getErrorCacheSize())
+                .expireAfterWrite(config.getErrorCacheTtl(), config.getErrorCacheTimeUnit())
+                .recordStats().build();
         registerCacheMetrics(namespace + "Exceptions", exceptionsCache, metricRegistry);
-
     }
 
     private void registerCacheMetrics(String namespace, final com.google.common.cache.Cache cache, MetricRegistry metricRegistry) {
@@ -69,27 +114,6 @@ public class GuavaCacheImpl implements Cache {
                 return Ratio.of(stats.missCount(), stats.requestCount());
             }
         });
-    }
-
-    @Override
-    public Object get(CachedMethodId key) throws Throwable {
-        Object cachedResult = resultsCache.getIfPresent(key);
-        if (cachedResult != null) {
-            return cachedResult;
-        }
-        lookForException(key);
-        return null;
-    }
-
-    @Override
-    public void put(CachedMethodId key, Object value) {
-        resultsCache.put(key, value);
-    }
-
-    @Override
-    public void put(CachedMethodId key, Throwable e) {
-        exceptionsCache.put(key, e);
-
     }
 
     private void lookForException(CachedMethodId cacheKey) throws Throwable {
