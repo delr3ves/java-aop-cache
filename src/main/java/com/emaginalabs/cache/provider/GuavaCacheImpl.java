@@ -55,9 +55,7 @@ public class GuavaCacheImpl implements Cache {
     @Override
     public void invalidate() {
         resultsCache.invalidateAll();
-        resultsCache.cleanUp();
         exceptionsCache.invalidateAll();
-        exceptionsCache.cleanUp();
 
         this.initializeCaches();
     }
