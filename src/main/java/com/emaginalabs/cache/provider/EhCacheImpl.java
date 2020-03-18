@@ -22,12 +22,27 @@ public class EhCacheImpl implements Cache {
     net.sf.ehcache.Cache resultsCache;
     net.sf.ehcache.Cache exceptionsCache;
 
+    private String namespace;
+    private CacheNamespaceConfig config;
+
     public EhCacheImpl(String namespace, CacheNamespaceConfig config,
                        MetricRegistry metricRegistry, CacheManager cacheManager) {
+        this.namespace = namespace;
+        this.config = config;
         resultsCache = initializeCache(config.getResultCacheSize(), config.getResultTTLInSeconds(),
                 metricRegistry, cacheManager, namespace + "Results");
         exceptionsCache = initializeCache(config.getErrorCacheSize(), config.getErrorTTLInSeconds(),
                 metricRegistry, cacheManager, namespace + "Exceptions");
+    }
+
+    @Override
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @Override
+    public CacheNamespaceConfig getConfig() {
+        return config;
     }
 
     @Override

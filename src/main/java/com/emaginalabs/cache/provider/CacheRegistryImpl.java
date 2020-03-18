@@ -33,7 +33,8 @@ public class CacheRegistryImpl implements CacheRegistry {
     public Cache getCache(String namespace) {
         Cache cache = cacheRegistry.get(namespace);
         if (cache == null) {
-            cache = cacheRegistry.get(Cached.DEFAULT_NAMESPACE);
+            CacheNamespaceConfig config = getCacheConfigOrDefault(namespace);
+            cache = initializeCache(namespace, config);
         }
         return cache;
     }
@@ -52,14 +53,24 @@ public class CacheRegistryImpl implements CacheRegistry {
         }
     }
 
-    private void initializeCache(String namespace, CacheNamespaceConfig config) {
+    private Cache initializeCache(String namespace, CacheNamespaceConfig config) {
         CacheNamespaceConfig.CacheProvider provider = config.getProvider();
+        Cache cache = null;
         if (provider.equals(CacheNamespaceConfig.CacheProvider.GUAVA)) {
-            cacheRegistry.put(namespace, new GuavaCacheImpl(namespace, config, metricRegistry));
+            cache = new GuavaCacheImpl(namespace, config, metricRegistry);
         } else if (provider.equals(CacheNamespaceConfig.CacheProvider.EHCACHE)) {
-            cacheRegistry.put(namespace, new EhCacheImpl(namespace, config, metricRegistry, cacheManager));
+            cache = new EhCacheImpl(namespace, config, metricRegistry, cacheManager);
         }
+        cacheRegistry.put(namespace, cache);
+        return cache;
     }
 
+    private CacheNamespaceConfig getCacheConfigOrDefault(String namespace) {
+        CacheNamespaceConfig config = cacheConfig.get(namespace);
+        if (config == null) {
+            config = cacheConfig.get(Cached.DEFAULT_NAMESPACE);
+        }
+        return config;
+    }
 
 }

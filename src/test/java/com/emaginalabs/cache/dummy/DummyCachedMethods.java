@@ -10,6 +10,8 @@ import java.util.UUID;
  */
 public class DummyCachedMethods {
 
+    public final static String NAMESPACE_NON_CONFIGURED_ON_INIT = "NAMESPACE_NON_CONFIGURED_ON_INIT";
+
     @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE)
     public String getCachedUUIDByGuava() {
         return UUID.randomUUID().toString();
@@ -38,6 +40,11 @@ public class DummyCachedMethods {
     @Cached(namespace = CacheConfigBuilder.GUAVA_NAMESPACE, cachedExceptions = {NullPointerException.class})
     public String throwNonCachedException() {
         throw new RuntimeException(UUID.randomUUID().toString());
+    }
+
+    @Cached(namespace = NAMESPACE_NON_CONFIGURED_ON_INIT)
+    public String getCachedUUID() {
+        return UUID.randomUUID().toString();
     }
 
 }

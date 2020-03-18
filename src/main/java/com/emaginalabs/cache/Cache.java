@@ -5,6 +5,10 @@ package com.emaginalabs.cache;
  */
 public interface Cache {
 
+    String getNamespace();
+
+    CacheNamespaceConfig getConfig();
+
     Object get(CachedMethodId key) throws Throwable;
 
     void put(CachedMethodId key, Object value);

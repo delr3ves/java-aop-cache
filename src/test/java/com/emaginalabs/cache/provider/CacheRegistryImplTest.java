@@ -1,14 +1,13 @@
 package com.emaginalabs.cache.provider;
 
 import com.codahale.metrics.MetricRegistry;
-import com.emaginalabs.cache.Cache;
-import com.emaginalabs.cache.Cached;
+import com.emaginalabs.cache.*;
 import com.emaginalabs.cache.fixture.CacheConfigBuilder;
-import com.emaginalabs.cache.CacheConfig;
-import com.emaginalabs.cache.CacheRegistry;
 import net.sf.ehcache.CacheManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,10 +18,12 @@ import static org.testng.Assert.assertTrue;
 public class CacheRegistryImplTest {
 
     public static final String IRRELEVANT_NAMESPACE = "irrelevantNamespace";
+    private CacheConfig cacheConfig;
 
     @DataProvider(name = "onlyDefaultCacheCacheRegistry")
     public Object[][] onlyDefaultCacheCacheRegistry() {
-        CacheRegistry cacheRegistry = new CacheRegistryImpl(new CacheConfig(),
+        cacheConfig = new CacheConfig();
+        CacheRegistry cacheRegistry = new CacheRegistryImpl(cacheConfig,
                 CacheManager.getInstance(), new MetricRegistry());
         return new Object[][]{
                 { cacheRegistry }
@@ -40,12 +41,13 @@ public class CacheRegistryImplTest {
     }
 
     @Test(dataProvider = "onlyDefaultCacheCacheRegistry")
-    public void whenLookForNotFoundCacheItShouldReturnTheDefaultOne(CacheRegistry cacheRegistry) {
+    public void whenLookForNotFoundCacheItShouldReturnTheACacheWithGivenNamespaceButDefaultConfig(CacheRegistry cacheRegistry) {
         Cache irrelevantCache = cacheRegistry.getCache(IRRELEVANT_NAMESPACE);
         Cache defaultCache = cacheRegistry.getCache(Cached.DEFAULT_NAMESPACE);
-        assertTrue(irrelevantCache == defaultCache); //want to check is the same cache
+        assertTrue(irrelevantCache != defaultCache);
+        assertTrue(irrelevantCache.getNamespace() == IRRELEVANT_NAMESPACE);
+        assertTrue(irrelevantCache.getConfig() == defaultCache.getConfig());
     }
-
 
     @DataProvider(name = "cacheCacheRegistry")
     public Object[][] cacheCacheRegistry() {
@@ -76,7 +78,24 @@ public class CacheRegistryImplTest {
         Cache irrelevantCache = cacheRegistry.getCache(IRRELEVANT_NAMESPACE);
         Cache defaultCache = cacheRegistry.getCache(Cached.DEFAULT_NAMESPACE);
         assertThat(irrelevantCache, not(equalTo(defaultCache)));
+    }
 
+    @Test(dataProvider = "onlyDefaultCacheCacheRegistry")
+    public void whenCreateCacheRegistryWithSomeOverriddenNamespacesItShouldReturnTheNewConfig(CacheRegistry cacheRegistry) {
+        CacheNamespaceConfig newConfig = givenANewConfigForNamespace(IRRELEVANT_NAMESPACE);
+        Cache irrelevantCache = cacheRegistry.getCache(IRRELEVANT_NAMESPACE);
+        assertThat(irrelevantCache.getConfig(), equalTo(newConfig));
+    }
+
+    private CacheNamespaceConfig givenANewConfigForNamespace(String namespace) {
+        CacheNamespaceConfig newConfig = new CacheNamespaceConfig();
+        newConfig.setProvider(CacheNamespaceConfig.CacheProvider.EHCACHE);
+        newConfig.setResultCacheTtl(6);
+        newConfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
+        newConfig.setErrorCacheTtl(5);
+        newConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);
+        cacheConfig.put(namespace, newConfig);
+        return newConfig;
     }
 
 }

@@ -33,6 +33,16 @@ public class GuavaCacheImpl implements Cache {
     }
 
     @Override
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @Override
+    public CacheNamespaceConfig getConfig() {
+        return config;
+    }
+
+    @Override
     public Object get(CachedMethodId key) throws Throwable {
         Object cachedResult = resultsCache.getIfPresent(key);
         if (cachedResult != null) {

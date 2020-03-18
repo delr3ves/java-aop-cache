@@ -2,6 +2,7 @@ package com.emaginalabs.cache.fixture;
 
 import com.emaginalabs.cache.CacheConfig;
 import com.emaginalabs.cache.CacheNamespaceConfig;
+import com.emaginalabs.cache.Cached;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class CacheConfigBuilder {
     public static final String GUAVA_NAMESPACE = "GUAVA";
     public static final int GUAVA_TTL = 100;
     public static final int EHCACHE_TTL = 1000;
+    public static final int DEFAULT_TTL = 600;
 
     public static CacheConfig createConfigForNamespace(String namespace) {
         Map<String, CacheNamespaceConfig> configValues = new HashMap<String, CacheNamespaceConfig>();
@@ -40,6 +42,14 @@ public class CacheConfigBuilder {
         guavaConfig.setErrorCacheTtl(GUAVA_TTL);
         guavaConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);
         configValues.put(GUAVA_NAMESPACE, guavaConfig);
+
+        CacheNamespaceConfig defaultConfig = new CacheNamespaceConfig();
+        defaultConfig.setProvider(CacheNamespaceConfig.CacheProvider.GUAVA);
+        defaultConfig.setResultCacheTtl(DEFAULT_TTL);
+        defaultConfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
+        defaultConfig.setErrorCacheTtl(DEFAULT_TTL);
+        defaultConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);
+        configValues.put(Cached.DEFAULT_NAMESPACE, defaultConfig);
 
         return new CacheConfig(configValues);
     }
