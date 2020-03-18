@@ -9,6 +9,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,11 +23,13 @@ public class AOPCacheIntegrationTest {
 
     private DummyCachedMethods dummyCachedMethods;
     private CacheInvalidator cacheInvalidator;
+    private CacheConfig config;
 
     @BeforeMethod
     public void setUp() {
+        config = CacheConfigBuilder.createConfigForIntegration();
         Injector injector = Guice.createInjector(new AOPCacheGuiceModule(
-                CacheConfigBuilder.createConfigForIntegration(), new MetricRegistry()));
+                config, new MetricRegistry()));
         dummyCachedMethods = injector.getInstance(DummyCachedMethods.class);
         cacheInvalidator = injector.getInstance(CacheInvalidator.class);
     }
@@ -34,6 +38,7 @@ public class AOPCacheIntegrationTest {
     public void tearDown() {
         cacheInvalidator.invalidateNamespace(CacheConfigBuilder.GUAVA_NAMESPACE);
         cacheInvalidator.invalidateNamespace(CacheConfigBuilder.EHCACHE_NAMESPACE);
+        cacheInvalidator.invalidateNamespace(DummyCachedMethods.NAMESPACE_NON_CONFIGURED_ON_INIT);
     }
 
     @Test
@@ -175,4 +180,62 @@ public class AOPCacheIntegrationTest {
         assertThat(resultFirstCall, not(equalTo(resultSecondCall)));
         assertThat(resultSecondCall, equalTo(thirdSecondCall));
     }
+
+    @Test
+    public void testCacheNonConfiguredNamespaceShouldCacheInADifferentCacheThanDefault() {
+        String resultFirstCall = dummyCachedMethods.getCachedUUID();
+        cacheInvalidator.invalidateNamespace(Cached.DEFAULT_NAMESPACE);
+        String resultSecondCall = dummyCachedMethods.getCachedUUID();
+        assertThat(resultFirstCall, equalTo(resultSecondCall));
+    }
+
+    @Test
+    public void testCacheNonConfiguredNamespaceShouldWithDefaultConfig() throws Exception{
+        String resultFirstCall = dummyCachedMethods.getCachedUUID();
+        Thread.sleep(config.get(Cached.DEFAULT_NAMESPACE).getResultCacheTtl() / 2);
+        String resultSecondCall = dummyCachedMethods.getCachedUUID();
+        assertThat(resultFirstCall, equalTo(resultSecondCall));
+    }
+
+    @Test
+    public void testExpiredCacheNonConfiguredNamespaceShouldWithDefaultConfig() throws Exception{
+        String resultFirstCall = dummyCachedMethods.getCachedUUID();
+        Thread.sleep(config.get(Cached.DEFAULT_NAMESPACE).getResultCacheTtl() + 1);
+        String resultSecondCall = dummyCachedMethods.getCachedUUID();
+        assertThat(resultFirstCall, not(equalTo(resultSecondCall)));
+    }
+
+    @Test
+    public void testCacheWithNewConfiguredNamespaceShouldCacheInADifferentWithNewConfig() throws Exception{
+        givenANewConfigForNamespace(DummyCachedMethods.NAMESPACE_NON_CONFIGURED_ON_INIT);
+        String resultFirstCall = dummyCachedMethods.getCachedUUID();
+        int lessTimeThanExpectedTTL = config.get(Cached.DEFAULT_NAMESPACE).getResultCacheTtl() + 1;
+        Thread.sleep(lessTimeThanExpectedTTL);
+        String resultSecondCall = dummyCachedMethods.getCachedUUID();
+        assertThat(resultFirstCall, equalTo(resultSecondCall));
+    }
+
+    @Test
+    public void testExpiredCacheWithNewConfiguredNamespaceShouldCacheInADifferentWithNewConfig() throws Exception{
+        Integer newTTL = givenANewConfigForNamespace(DummyCachedMethods.NAMESPACE_NON_CONFIGURED_ON_INIT);
+
+        String resultFirstCall = dummyCachedMethods.getCachedUUID();
+        Thread.sleep(newTTL + 1);
+        String resultSecondCall = dummyCachedMethods.getCachedUUID();
+        assertThat(resultFirstCall, not(equalTo(resultSecondCall)));
+    }
+
+    private Integer givenANewConfigForNamespace(String namespace) {
+        CacheNamespaceConfig newConfig = new CacheNamespaceConfig();
+        newConfig.setProvider(CacheNamespaceConfig.CacheProvider.EHCACHE);
+        Integer defaultCacheTTL = config.get(Cached.DEFAULT_NAMESPACE).getResultCacheTtl();
+        Integer newTTL = defaultCacheTTL * 3;
+        newConfig.setResultCacheTtl(newTTL);
+        newConfig.setResultCacheTimeUnit(TimeUnit.MILLISECONDS);
+        newConfig.setErrorCacheTtl(newTTL);
+        newConfig.setErrorCacheTimeUnit(TimeUnit.MILLISECONDS);
+        config.put(namespace, newConfig);
+        return newTTL;
+    }
+
 }
